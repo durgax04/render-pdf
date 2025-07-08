@@ -20,15 +20,28 @@ export default function PdfViewer({ url }: { url: string }) {
   const [scale, setScale] = useState<number>(1.2); // 🔍 Initial zoom scale
 
   useEffect(() => {
-    const fetchPdf = async () => {
+  let objectUrl: string;
+
+  const fetchPdf = async () => {
+    try {
       const res = await fetch(url);
       const blob = await res.blob();
-      const localUrl = URL.createObjectURL(blob);
-      setBlobUrl(localUrl);
-    };
-    fetchPdf();
-    return () => blobUrl && URL.revokeObjectURL(blobUrl);
-  }, [url]);
+      objectUrl = URL.createObjectURL(blob);
+      setBlobUrl(objectUrl);
+    } catch (err) {
+      console.error("Error fetching PDF:", err);
+    }
+  };
+
+  fetchPdf();
+
+  return () => {
+    if (objectUrl) {
+      URL.revokeObjectURL(objectUrl);
+    }
+  };
+}, [url]);
+
 
   const zoomIn = () => setScale((prev) => Math.min(prev + 0.2, 3));
   const zoomOut = () => setScale((prev) => Math.max(prev - 0.2, 0.6));
