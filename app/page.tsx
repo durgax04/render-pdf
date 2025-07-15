@@ -1,4 +1,3 @@
-import Loader from "@/components/Loader";
 import PdfViewerWrapper from "@/components/PDFWraper";
 
 export default function Home() {
