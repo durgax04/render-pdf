@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from "lucide-react";
+import Loader from "./Loader";
 
 // Load local worker
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
@@ -46,7 +47,7 @@ export default function PdfViewer({ url }: { url: string }) {
   const zoomIn = () => setScale((prev) => Math.min(prev + 0.2, 3));
   const zoomOut = () => setScale((prev) => Math.max(prev - 0.2, 0.6));
 
-  if (!blobUrl) return <p>Loading PDF...</p>;
+  if (!blobUrl) return <Loader />;
 
   return (
     <div className="fixed w-full bg-white rounded-md shadow flex flex-col items-center">
@@ -101,7 +102,7 @@ export default function PdfViewer({ url }: { url: string }) {
             setNumPages(numPages);
             setPageNumber(1);
           }}
-          loading={<p className="text-center">Loading PDF...</p>}
+          loading={<Loader />}
           error={<p className="text-red-500">Failed to load PDF.</p>}
         >
           <AnimatePresence mode="wait">

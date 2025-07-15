@@ -3,6 +3,7 @@
 
 import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
+import Loader from "./Loader";
 
 const PdfViewer = dynamic(() => import("./PDFREnder"), { ssr: false });
 
@@ -13,7 +14,7 @@ export default function PdfViewerWrapper({ url }: { url: string }) {
     setIsClient(true);
   }, []);
 
-  if (!isClient) return <p>Loading...</p>;
+  if (!isClient) return <Loader />;
 
   return <PdfViewer url={url} />;
 }
